@@ -1,0 +1,11 @@
+# Build folders
+[Bb]in/
+[Oo]bj/
+[Dd]ebug]/
+[Rr]elease]/
+[Pp]ublish/
+
+# Visual Studio Files
+.vs/
+*.user
+
