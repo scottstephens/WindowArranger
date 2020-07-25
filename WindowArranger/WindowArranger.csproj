@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="PInvoke.SHCore" Version="0.6.49" />
     <PackageReference Include="PInvoke.User32" Version="0.6.49" />
   </ItemGroup>
 

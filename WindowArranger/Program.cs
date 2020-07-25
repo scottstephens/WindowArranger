@@ -40,7 +40,7 @@ namespace WindowArranger
                     ExitWithError("Auto mode only works with one or two screens.");
             }
 
-            //this.Layout(this.LayoutTest);
+            this.Layout(this.LayoutTest); return;
 
             switch (this.LayoutMode)
             {
@@ -103,12 +103,44 @@ namespace WindowArranger
             var monitor_handle = User32.MonitorFromWindow(window_handle, User32.MonitorOptions.MONITOR_DEFAULTTONULL);
             bool current_placement_result = Helpers.GetWindowPlacement(window_handle, out User32.WINDOWPLACEMENT current_placement);
 
+            var monitor_dpi_result = SHCore.GetDpiForMonitor(monitor_handle, MONITOR_DPI_TYPE.MDT_EFFECTIVE_DPI, out int monitor_dpi_x, out int monitor_dpi_y);
+
+            //var maximized_width = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CXMAXIMIZED, monitor_dpi_x);
+            //var maximized_height = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CYMAXIMIZED, monitor_dpi_y);
+            //var x_maximize_overhang = (int)(0.5*(maximized_width - monitor.WorkAreaRectangle.Width()));
+            //var y_maximize_overhang = (int)(0.5*(maximized_height - monitor.WorkAreaRectangle.Height()));
+
+            //var x_maximize_overhang = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CXSIZEFRAME, monitor_dpi_x);
+            //var y_maximize_overhang = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CYSIZEFRAME, monitor_dpi_y);
+
+            var x_maximize_overhang = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CXDRAG, monitor_dpi_x);
+            var y_maximize_overhang = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CYDRAG, monitor_dpi_y);
+
+            //abs_left -= x_maximize_overhang;
+            //abs_top -= y_maximize_overhang;
+            //abs_width += 2 * x_maximize_overhang;
+            //abs_height += 2 * y_maximize_overhang;
+
+
+            //abs_left -= (int)window_info.cxWindowBorders;
+            //abs_top -= (int)window_info.cyWindowBorders;
+            //abs_width += 2 * (int)window_info.cxWindowBorders;
+            //abs_height += 2 * (int)window_info.cyWindowBorders;
+
+            //Helpers.GetWindowInfo(window_handle, out User32.WINDOWINFO window_info);
+            //var x_maximize_overhang = window_info.rcClient.left - window_info.rcWindow.left;
+            //var y_maximize_overhang = window_info.rcWindow.bottom - window_info.rcClient.bottom;
+            abs_left -= x_maximize_overhang;
+            abs_top -= y_maximize_overhang;
+            abs_width += 2 * x_maximize_overhang;
+            abs_height += 2 * y_maximize_overhang;
+
             if (current_placement.showCmd == User32.WindowShowStyle.SW_SHOWMINIMIZED)
             {
                 var tmp_placement = current_placement;
                 tmp_placement.showCmd = User32.WindowShowStyle.SW_SHOWNORMAL;
                 Helpers.SetWindowPlacement(window_handle, ref tmp_placement);
-                
+
                 var flags = User32.SetWindowPosFlags.SWP_NOZORDER | User32.SetWindowPosFlags.SWP_SHOWWINDOW;
                 var result = User32.SetWindowPos(window_handle, IntPtr.Zero, abs_left, abs_top, abs_width, abs_height, flags);
 
@@ -176,8 +208,6 @@ namespace WindowArranger
             LayoutFromFractionalRelative(monitor, window_handle, 0.0, 0.0, 1.0, 1.0);
         }
 
-        
-
         private static HashSet<string> WindowsToIgnore = new HashSet<string>()
         {
             "WindowArranger",
@@ -244,8 +274,8 @@ namespace WindowArranger
 
         private void LayoutTest(List<Helpers.DisplayMonitorInfo> displays, IntPtr main_window, string pname)
         {
-            if (pname == "notepad++")
-                LayoutLeftBottom(displays[1], main_window);
+            if (pname == "firefox")
+                LayoutLeftTop(displays[1], main_window);
         }
 
         private class ParseResult
