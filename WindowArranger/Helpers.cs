@@ -227,5 +227,12 @@ namespace WindowArranger
             fixed (User32.WINDOWPLACEMENT* ptr = &output)
                 return User32.SetWindowPlacement(window_handle, ptr);
         }
+
+        public static unsafe bool GetWindowInfo(IntPtr window_handle, out User32.WINDOWINFO output)
+        {
+            output = new User32.WINDOWINFO();
+            output.cbSize = (uint)sizeof(User32.WINDOWINFO);
+            return User32.GetWindowInfo(window_handle, ref output);
+        }
     }
 }

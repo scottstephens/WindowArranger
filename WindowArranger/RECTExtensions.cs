@@ -27,5 +27,10 @@ namespace WindowArranger
             return self.right - self.left;
         }
 
+        public static string Summary(this in RECT self)
+        {
+            return $"{self.Width()} x {self.Height()} @ ({self.OriginX()}, {self.OriginY()})";
+        }
+
     }
 }
