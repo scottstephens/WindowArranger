@@ -188,6 +188,9 @@ namespace WindowArranger
         {
             var displays = Helpers.GetDisplayMonitors().ToList();
             var windows = Helpers.EnumWindows().Where(x => Helpers.IsAltTabWindow(x)).ToList();
+            //var window_info = windows.Select(x => WindowInfo.Get(x)).Where(x => x.Process.ProcessName == "devenv" && x.Title.Contains("Everything")).FirstOrDefault();
+            //LayoutRightHalf(displays[1], window_info.Handle);
+            //return;
 
             var process_names = new List<string>();
             foreach (var main_window in windows)
