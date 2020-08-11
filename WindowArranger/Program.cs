@@ -104,6 +104,7 @@ namespace WindowArranger
             bool current_placement_result = Helpers.GetWindowPlacement(window_handle, out User32.WINDOWPLACEMENT current_placement);
 
             var monitor_dpi_result = SHCore.GetDpiForMonitor(monitor_handle, MONITOR_DPI_TYPE.MDT_EFFECTIVE_DPI, out int monitor_dpi_x, out int monitor_dpi_y);
+            var monitor_dpi_result_physical = SHCore.GetDpiForMonitor(monitor_handle, MONITOR_DPI_TYPE.MDT_RAW_DPI, out int monitor_physical_dpi_x, out int monitor_physical_dpi_y);
 
             //var maximized_width = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CXMAXIMIZED, monitor_dpi_x);
             //var maximized_height = User32.GetSystemMetricsForDpi((int)User32.SystemMetric.SM_CYMAXIMIZED, monitor_dpi_y);
