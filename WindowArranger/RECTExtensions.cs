@@ -27,5 +27,10 @@ namespace WindowArranger
             return self.right - self.left;
         }
 
+        public static (int, int) Dimensions(this in RECT self)
+        {
+            return (self.right - self.left, self.bottom - self.top);
+        }
+
     }
 }
