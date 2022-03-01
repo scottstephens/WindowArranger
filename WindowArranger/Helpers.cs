@@ -36,6 +36,32 @@ namespace WindowArranger
             int thread_id = User32.GetWindowThreadProcessId(window_handle, out int process_id);
             return process_id;
         }
+
+        public class DisplayDevice
+        {
+            public DISPLAY_DEVICE Device;
+            public DISPLAY_DEVICE Monitor;
+            public bool GotMonitor;
+        }
+
+        internal static IEnumerable<DisplayDevice> GetDisplayDevices()
+        {
+            for (uint ii = 0; ii <= UInt32.MaxValue; ii++)
+            {
+                var device = new DisplayDevice();
+                device.Device.cb = Marshal.SizeOf<DISPLAY_DEVICE>();
+                var got_device = EnumDisplayDevices(null, ii, ref device.Device, 0);
+                if (got_device)
+                {
+                    device.Monitor.cb = Marshal.SizeOf<DISPLAY_DEVICE>();
+                    device.GotMonitor = EnumDisplayDevices(device.Device.DeviceName, 0, ref device.Monitor, 0);
+                    yield return device;
+                }
+                else
+                    break;
+            }
+        }
+
         // GetWindowThreadProcessId - Get window thread and process ID
 
         // GetWindowInfo

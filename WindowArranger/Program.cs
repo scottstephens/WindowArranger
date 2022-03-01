@@ -32,6 +32,8 @@ namespace WindowArranger
             if (this.LayoutMode == LayoutEnum.Auto)
             {
                 var displays = Helpers.GetDisplayMonitors().ToList();
+                var displays2 = Helpers.GetDisplayDevices().ToList();
+
                 if (displays.Count == 1)
                     this.LayoutMode = LayoutEnum.Laptop;
                 else if (displays.Count == 2)
@@ -188,23 +190,17 @@ namespace WindowArranger
         {
             var displays = Helpers.GetDisplayMonitors().ToList();
             var windows = Helpers.EnumWindows().Where(x => Helpers.IsAltTabWindow(x)).ToList();
-            //var window_info = windows.Select(x => WindowInfo.Get(x)).Where(x => x.Process.ProcessName == "devenv" && x.Title.Contains("Everything")).FirstOrDefault();
+            var window_info = windows.Select(x => WindowInfo.Get(x)).ToList();
             //LayoutRightHalf(displays[1], window_info.Handle);
             //return;
 
             var process_names = new List<string>();
-            foreach (var main_window in windows)
+            foreach (var main_window in window_info)
             {
-                var pid = Helpers.GetWindowsProcessId(main_window);
-                var process = Process.GetProcessById(pid);
-
-                if (WindowsToIgnore.Contains(process.ProcessName))
+                if (WindowsToIgnore.Contains(main_window.Process.ProcessName))
                     continue;
 
-                var pname = process.ProcessName;
-
-                logic(displays, main_window, pname);
-                
+                logic(displays, main_window.Handle, main_window.Process.ProcessName);
             }
         }
 

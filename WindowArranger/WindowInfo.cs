@@ -11,6 +11,7 @@ namespace WindowArranger
         public IntPtr Handle;
         public string Title;
         public Process Process;
+        public string ProcessName => this.Process?.ProcessName;
 
         public static WindowInfo Get(IntPtr handle)
         {
@@ -19,6 +20,7 @@ namespace WindowArranger
             output.Title = User32.GetWindowText(handle);
             int pid = Helpers.GetWindowsProcessId(handle);
             output.Process = Process.GetProcessById(pid);
+
             return output;
         }
     }
