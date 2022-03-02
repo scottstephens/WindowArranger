@@ -176,6 +176,8 @@ namespace WindowArranger
                 LayoutLeftTop(displays[1], main_window);
             else if (pname == "notepad++")
                 LayoutLeftBottom(displays[1], main_window);
+            else if (pname == "slack")
+                LayoutMaximized(displays[0], main_window);
             else
                 LayoutLeftBottom(displays[1], main_window);
         }
