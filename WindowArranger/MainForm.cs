@@ -13,6 +13,7 @@ namespace WindowArranger
         {
             var p = new ConsoleProgram();
             p.Run(new string[] { });
+            this.Close();
         }
     }
 }
